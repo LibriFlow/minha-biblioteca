@@ -1,0 +1,2057 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Biblioteca Pessoal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Configurações para Web App em iOS (PWA Lite) -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Minha Biblioteca">
+    <!-- Ícone para a tela inicial do iOS (substitua pela URL da sua imagem de livro 192x192px) -->
+    <link rel="apple-touch-icon" href="https://example.com/images/book_icon_192.png">
+    <!-- Exemplo de splash screen para iPhone X/XS/11 Pro (opcional, adicione mais para outros dispositivos) -->
+    <link rel="apple-touch-startup-image" href="https://example.com/images/splash_screen_iphonex.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+
+    <!-- Favicon padrão para navegadores (substitua pela URL da sua imagem de livro 32x32px ou 64x64px) -->
+    <link rel="icon" href="https://example.com/images/favicon_32.png" type="image/png">
+
+    <style>
+        /* Estilos para o modo escuro */
+        body {
+            background: linear-gradient(to bottom right, #fdfcfb, #e2e8f0); /* Gradiente suave para o corpo */
+            min-height: 100vh;
+        }
+        body.dark {
+            background: linear-gradient(to bottom right, #1a202c, #2d3748); /* Gradiente de cinza escuro */
+            color: #e2e8f0; /* gray-200 */
+        }
+        /* REMOVIDO: .dark .bg-gray-50 { background-color: #1a202c; } */
+        .dark .bg-white {
+            background-color: #2d3748; /* gray-800 */
+        }
+        .dark .text-gray-800 {
+            color: #e2e8f0;
+        }
+        .dark .text-gray-700 {
+            color: #cbd5e0; /* gray-300 */
+        }
+        .dark .text-gray-600 {
+            color: #a0aec0; /* gray-400 */
+        }
+        .dark .text-gray-500 {
+            color: #718096; /* gray-500 */
+        }
+        .dark .border {
+            border-color: #4a5568; /* gray-600 */
+        }
+        .dark .form-container {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+        }
+        .dark .book-card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .dark .book-card:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+        .dark .modal-content {
+            background-color: #2d3748;
+        }
+        .dark .login-card {
+            background-color: #2d3748;
+        }
+        .dark .login-card h2, .dark .login-card p {
+            color: #e2e8f0;
+        }
+        .dark .input-error {
+            border-color: #f56565; /* red-400 */
+            box-shadow: 0 0 0 2px rgba(245, 101, 101, 0.5);
+        }
+        .dark .error-message {
+            color: #f56565; /* red-400 */
+        }
+        .dark .bg-gray-200 {
+            background-color: #4a5568;
+        }
+        .dark .hover\:bg-gray-300:hover {
+            background-color: #616e7f;
+        }
+        .dark .bg-gray-100 {
+            background-color: #2d3748;
+        }
+        .dark .hover\:bg-gray-100:hover {
+            background-color: #4a5568;
+        }
+        .dark .bg-white.bg-opacity-80 {
+            background-color: rgba(45, 55, 72, 0.8);
+        }
+        .dark .hover\:bg-red-100:hover {
+            background-color: #4a2a2a;
+        }
+        .dark .hover\:bg-blue-100:hover {
+            background-color: #2a3a4a;
+        }
+        .dark .text-yellow-400 {
+            color: #f6e05e; /* yellow-300 */
+        }
+        .dark .text-gray-300 {
+            color: #a0aec0; /* gray-400 */
+        }
+        .dark .text-gray-400 {
+            color: #718096; /* gray-500 */
+        }
+        .dark .text-gray-900 {
+            color: #e2e8f0;
+        }
+        .dark .text-gray-200 {
+            color: #a0aec0;
+        }
+        .dark .text-gray-300 {
+            color: #a0aec0;
+        }
+        .dark .text-gray-400 {
+            color: #718096;
+        }
+        .dark .text-gray-500 {
+            color: #718096;
+        }
+        .dark .text-gray-600 {
+            color: #a0aec0;
+        }
+        .dark .text-gray-700 {
+            color: #cbd5e0;
+        }
+        .dark .text-gray-800 {
+            color: #e2e8f0;
+        }
+        .dark .text-gray-900 {
+            color: #e2e8f0;
+        }
+        .dark .placeholder-gray-500::placeholder {
+            color: #a0aec0;
+        }
+        .dark input, .dark textarea, .dark select {
+            background-color: #2d3748;
+            border-color: #4a5568;
+            color: #e2e8f0;
+        }
+        .dark input:focus, .dark textarea:focus, .dark select:focus {
+            border-color: #34d399; /* emerald-400 */
+            box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.5);
+        }
+        .dark .star-rating label {
+            color: #4a5568; /* gray-600 */
+        }
+        .dark .star-rating input:checked ~ label,
+        .dark .star-rating input:hover ~ label {
+            color: #f6e05e; /* yellow-300 */
+        }
+        .dark .star-rating label:hover,
+        .dark .star-rating label:hover ~ label {
+            color: #f6e05e; /* yellow-300 */
+        }
+
+
+        .star-rating {
+            display: inline-flex;
+            flex-direction: row-reverse; /* CORREÇÃO: Inverte a direção para que o CSS ~ label funcione da esquerda para a direita visualmente */
+        }
+        .star-rating input {
+            display: none;
+        }
+        .star-rating label {
+            color: #e4e5e9;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .star-rating input:checked ~ label,
+        .star-rating input:hover ~ label {
+            color: #ffc107;
+        }
+        /* CORREÇÃO: Ajusta o hover para colorir apenas a estrela atual e as anteriores */
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #ffc107;
+        }
+        .book-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-width: 0;
+            flex: 1;
+            display: flex;
+            min-height: 280px;
+            position: relative; /* Necessário para o botão de exclusão */
+        }
+
+        @media (max-width: 640px) {
+            .book-card {
+                min-height: 220px;
+            }
+        }
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        .form-container {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .library-container {
+            min-height: calc(100vh - 300px);
+        }
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        /* Estilos para notificações e modais */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(20px); }
+        }
+        .animate-fade-in { animation: fadeIn 0.3s forwards; }
+        .animate-fade-out { animation: fadeOut 0.3s forwards; }
+
+        /* Estilos para animação de exclusão do card */
+        @keyframes shrinkAndFade {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.8); }
+        }
+        .animate-shrink-fade {
+            animation: shrinkAndFade 0.3s forwards;
+        }
+
+        /* Estilos para animação de entrada do card */
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide-in-up {
+            animation: slideInUp 0.3s ease-out forwards;
+        }
+
+        /* Estilos para validação de formulário */
+        .input-error {
+            border-color: #ef4444; /* red-500 */
+            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.5); /* ring-red-500 */
+        }
+        .error-message {
+            color: #ef4444; /* red-500 */
+            font-size: 0.875rem; /* text-sm */
+            margin-top: 0.25rem; /* mt-1 */
+        }
+
+        /* Estilos para o modal */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(3px);
+            position: fixed; /* Garante que ele cobre a viewport */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex; /* Para centralizar o modal-content */
+            align-items: center; /* Centraliza verticalmente */
+            justify-content: center; /* Centraliza horizontalmente */
+            z-index: 50; /* Garante que esteja acima de outros elementos */
+        }
+        .modal-content {
+            animation: fadeIn 0.3s ease-out;
+            /* Ajustes para responsividade */
+            width: 90%; /* Ocupa 90% da largura da tela */
+            max-width: 768px; /* Limite máximo para tablets e desktops */
+            max-height: 90vh; /* Limita a altura para não transbordar em telas pequenas */
+            overflow-y: auto; /* Adiciona scroll se o conteúdo for muito grande */
+            margin: 1rem; /* Espaçamento nas bordas em telas pequenas */
+        }
+
+        /* Ajustes específicos para a imagem dentro do modal */
+        #detailsCover {
+            width: 100%; /* Garante que a imagem preencha a largura disponível */
+            height: auto; /* Mantém a proporção */
+            max-height: 300px; /* Limita a altura da imagem no modal para não ser excessiva */
+            object-fit: contain; /* Garante que a imagem inteira seja visível, sem cortar */
+            margin: 0 auto; /* Centraliza a imagem se ela for menor que o contêiner */
+            display: block; /* Remove espaço extra abaixo da imagem */
+        }
+
+        /* Ajustes para o layout flex do modal em telas menores */
+        .modal-content .flex-col.md\:flex-row {
+            flex-direction: column; /* Por padrão, empilha em colunas */
+        }
+
+        @media (min-width: 768px) { /* md breakpoint */
+            .modal-content .flex-col.md\:flex-row {
+                flex-direction: row; /* Em telas médias e maiores, layout em linha */
+            }
+            #detailsCover {
+                max-height: none; /* Remove o limite de altura em telas maiores */
+                object-fit: cover; /* Volta para cover em telas maiores se preferir */
+            }
+        }
+
+        /* Estilos para a tela de login */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #a7bfe8 0%, #6190e8 100%);
+        }
+        .login-card {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .login-card h2 {
+            font-size: 2.25rem;
+            font-weight: bold;
+            color: #374151; /* gray-800 */
+            margin-bottom: 1.5rem;
+        }
+        .login-card p {
+            color: #6b7280; /* gray-600 */
+            margin-bottom: 2rem;
+        }
+        .google-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #4285F4; /* Google Blue */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto;
+        }
+        .google-btn:hover {
+            background-color: #357ae8;
+        }
+        .google-btn img {
+            margin-right: 0.75rem;
+            width: 24px;
+            height: 24px;
+        }
+        /* Botão de tema */
+        #themeToggle {
+            background-color: #059669; /* emerald-600 */
+            color: white;
+            border-radius: 9999px; /* full rounded */
+            width: 48px; /* w-12 */
+            height: 48px; /* h-12 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem; /* text-xl */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        #themeToggle:hover {
+            background-color: #047857; /* emerald-700 */
+            transform: scale(1.05);
+        }
+        #themeToggle:active {
+            transform: scale(0.95);
+        }
+
+        /* Estilos para o menu mobile */
+        #mobileMenu {
+            transition: max-height 0.3s ease-out;
+            overflow: hidden;
+            max-height: 0;
+        }
+        #mobileMenu.open {
+            max-height: 200px; /* Ajuste conforme o conteúdo */
+        }
+        .dark #mobileMenu {
+            background-color: #1a202c; /* gray-900 */
+        }
+        .dark #searchInputMobile {
+            background-color: #2d3748;
+            border-color: #4a5568;
+            color: #e2e8f0;
+        }
+        .dark #searchInputMobile::placeholder {
+            color: #a0aec0;
+        }
+
+        /* NOVOS ESTILOS PARA O CABEÇALHO */
+        header {
+            background: linear-gradient(to right, #6ee7b7, #34d399); /* Gradiente verde esmeralda claro */
+            color: #1a202c; /* Cor de texto escura para contraste */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark header {
+            background: #1a202c; /* Fundo bem escuro para o cabeçalho no modo dark */
+            color: #e2e8f0; /* Cor de texto clara */
+        }
+
+        /* Ajustes para elementos dentro do header no modo dark */
+        body.dark header .text-gray-800 {
+            color: #e2e8f0; /* Garante que o texto do input de pesquisa fique claro */
+        }
+
+        body.dark header .text-emerald-700 {
+            color: #e2e8f0; /* Cor do texto do botão "Adicionar Livro" */
+        }
+
+        body.dark header .bg-white {
+            background-color: #4a5568; /* Fundo do botão "Adicionar Livro" no modo dark */
+            color: #e2e8f0; /* Cor do texto do botão "Adicionar Livro" */
+        }
+
+        body.dark header .hover\:bg-emerald-100:hover {
+            background-color: #616e7f; /* Hover do botão "Adicionar Livro" */
+        }
+
+        body.dark header .bg-red-500 {
+            background-color: #e53e3e; /* Fundo do botão "Sair" no modo dark */
+        }
+
+        body.dark header .hover\:bg-red-600:hover {
+            background-color: #c53030; /* Hover do botão "Sair" no modo dark */
+        }
+
+        /* Ajuste para o input de pesquisa no header */
+        header input[type="text"] {
+            background-color: rgba(255, 255, 255, 0.8); /* Fundo semi-transparente claro */
+            color: #1a202c; /* Cor do texto escura */
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark header input[type="text"] {
+            background-color: #2d3748; /* Fundo escuro para o input no modo dark */
+            color: #e2e8f0; /* Cor do texto clara */
+            border-color: #4a5568;
+        }
+
+        header input[type="text"]::placeholder {
+            color: #4a5568; /* Placeholder mais escuro no modo claro */
+        }
+
+        body.dark header input[type="text"]::placeholder {
+            color: #a0aec0; /* Placeholder mais claro no modo escuro */
+        }
+
+        /* Ajuste para o menu mobile no modo claro */
+        #mobileMenu {
+            background-color: #d1fae5; /* Um verde claro para o menu mobile no modo claro */
+            color: #1a202c;
+        }
+
+        /* Estilos para as novas abas de navegação */
+        .tab-button {
+            @apply px-5 py-2 rounded-full font-semibold transition-all duration-200 ease-in-out flex items-center justify-center whitespace-nowrap; /* Adicionado rounded-full, flex, items-center, justify-center, whitespace-nowrap */
+            border: 1px solid transparent; /* Adiciona uma borda transparente para consistência */
+        }
+        .tab-button.active {
+            @apply bg-emerald-600 text-white shadow-md border-emerald-600; /* Adicionado shadow-md e border */
+        }
+        .tab-button:not(.active) {
+            @apply bg-gray-100 text-gray-700 border-gray-200; /* Fundo e borda para estado inativo */
+        }
+        .tab-button:not(.active):hover {
+            @apply bg-gray-200 text-gray-800 border-gray-300 transform scale-105; /* Efeito de escala no hover */
+        }
+
+        /* Modo Escuro para as Abas */
+        body.dark .tab-button.active {
+            @apply bg-emerald-700 text-white shadow-lg border-emerald-700; /* Sombra mais forte no dark mode */
+        }
+        body.dark .tab-button:not(.active) {
+            @apply bg-gray-700 text-gray-200 border-gray-600; /* Fundo e borda mais escuros */
+        }
+        body.dark .tab-button:not(.active):hover {
+            @apply bg-gray-600 text-gray-100 border-gray-500 transform scale-105; /* Efeito de escala no hover */
+        }
+
+        /* Ajuste para o contêiner das abas para melhor rolagem em telas pequenas */
+        .flex.space-x-2.overflow-x-auto.pb-2 {
+            -webkit-overflow-scrolling: touch; /* Melhora a rolagem em iOS */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE 10+ */
+        }
+        .flex.space-x-2.overflow-x-auto.pb-2::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+    </style>
+</head>
+<body class="">
+    <!-- Tela de Login (Inicialmente visível) -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-card">
+            <h2 class="text-4xl">📚 Minha Biblioteca</h2>
+            <p class="text-lg">Acesse sua coleção pessoal de livros.</p>
+            <button id="googleSignInBtn" class="google-btn">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/24px-Google_%22G%22_logo.svg.png" alt="Google logo">
+                Entrar com Google
+            </button>
+            <div id="loginError" class="error-message mt-4 hidden"></div>
+        </div>
+    </div>
+
+    <!-- Conteúdo Principal da Biblioteca (Inicialmente oculto) -->
+    <div id="mainContent" class="hidden">
+        <header class="text-white shadow-lg">
+            <div class="container mx-auto px-4 py-6">
+                <div class="flex justify-between items-center">
+                    <!-- Logo/Título Clicável -->
+                    <a href="#" onclick="event.preventDefault(); resetAndLoadBooks();" class="flex items-center space-x-2">
+                        <h1 class="text-3xl font-bold">📚 Minha Biblioteca</h1>
+                    </a>
+                    
+                    <!-- Barra de Pesquisa (movida para o header) -->
+                    <div class="flex-grow mx-4 hidden md:block"> <!-- Oculta em telas pequenas, aparece em md+ -->
+                        <input type="text" id="searchInputHeader" placeholder="Pesquisar livros..." class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-gray-800" aria-label="Campo de pesquisa de livros">
+                    </div>
+
+                    <div class="flex items-center space-x-4">
+                        <!-- Contagem de Livros (Exemplo) -->
+                        <span id="bookStats" class="text-sm hidden lg:block"></span>
+
+                        <!-- Menu Hambúrguer para telas pequenas -->
+                        <button id="menuToggle" class="md:hidden text-white text-2xl focus:outline-none" aria-label="Abrir menu de navegação">
+                            <i class="fas fa-bars"></i>
+                        </button>
+
+                        <!-- Opções para telas maiores -->
+                        <span id="userName" class="text-lg font-medium hidden md:block"></span>
+                        <button id="addBookBtn" class="bg-white text-emerald-700 px-4 py-2 rounded-lg font-semibold hover:bg-emerald-100 transition hidden md:block" aria-label="Adicionar novo livro">
+                            <i class="fas fa-plus mr-2"></i>Adicionar Livro
+                        </button>
+                        <button id="signOutBtn" class="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 transition hidden md:block" aria-label="Sair da conta">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Sair
+                        </button>
+                        <button id="themeToggle" class="focus:outline-none" aria-label="Alternar modo claro/escuro">
+                            <i class="fas fa-moon" id="themeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu responsivo (fora do header principal, mas controlado por ele) -->
+            <div id="mobileMenu" class="hidden md:hidden py-2 px-4">
+                <input type="text" id="searchInputMobile" placeholder="Pesquisar livros..." class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-gray-800 mb-2" aria-label="Campo de pesquisa de livros">
+                <button id="addBookBtnMobile" class="w-full bg-white text-emerald-700 px-4 py-2 rounded-lg font-semibold hover:bg-emerald-100 transition mb-2" aria-label="Adicionar novo livro">
+                    <i class="fas fa-plus mr-2"></i>Adicionar Livro
+                </button>
+                <button id="signOutBtnMobile" class="w-full bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 transition" aria-label="Sair da conta">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Sair
+                </button>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-4 py-8">
+            <!-- Formulário de Adição (Oculto Inicialmente) -->
+            <div id="formContainer" class="form-container hidden rounded-xl p-6 mb-8">
+                <h2 id="formTitle" class="text-2xl font-bold mb-6 text-gray-800">Adicionar Novo Livro</h2>
+                <form id="bookForm" class="space-y-4">
+                    <input type="hidden" id="bookId">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-700 mb-2" for="cover">Capa do Livro (URL)</label>
+                            <input type="text" id="cover" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600" placeholder="Cole a URL da imagem da capa">
+                            <p class="text-sm text-gray-500 mt-1">Ou deixe em branco para usar uma capa padrão</p>
+                            <div id="coverError" class="error-message hidden">URL da imagem inválida ou inacessível. Uma capa padrão será usada.</div>
+                            
+                            <label class="block text-gray-700 mt-4 mb-2" for="coverUpload">Ou Carregar Imagem</label>
+                            <div id="coverDropArea" class="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg text-center text-gray-500 hover:border-emerald-600 hover:text-emerald-700 transition cursor-pointer">
+                                <input type="file" id="coverUpload" accept="image/*" class="hidden" aria-label="Carregar imagem de capa do livro">
+                                <p><i class="fas fa-cloud-upload-alt mr-2"></i>Arraste e solte ou clique para carregar</p>
+                            </div>
+
+                            <div class="mt-4">
+                                <div class="aspect-[2/3] overflow-hidden flex items-center justify-center bg-gray-100 rounded-lg border">
+                                    <img id="coverPreview" src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/7cbc6f4a-553c-4c39-990c-f4e353dd4e79.png" alt="Pré-visualização da capa" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700 mb-2" for="title">Título do Livro*</label>
+                                <input type="text" id="title" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600" placeholder="Digite o título" aria-required="true">
+                                <div id="titleError" class="error-message hidden">O título é obrigatório.</div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-gray-700 mb-2" for="author">Autor*</label>
+                                <input type="text" id="author" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600" placeholder="Nome do autor" aria-required="true">
+                                <div id="authorError" class="error-message hidden">O autor é obrigatório.</div>
+                            </div>
+
+                            <div>
+                                <label class="block text-gray-700 mb-2" for="synopsis">Sinopse</label>
+                                <textarea id="synopsis" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 h-32 resize-y" placeholder="Escreva uma breve sinopse do livro (opcional)"></textarea>
+                            </div>
+
+                            <!-- REMOVIDO: NOVO CAMPO: Status do Livro -->
+                            <!-- <div>
+                                <label class="block text-gray-700 mb-2" for="status">Status do Livro</label>
+                                <select id="status" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600">
+                                    <option value="Quero Ler">Quero Ler</option>
+                                    <option value="Lendo">Lendo</option>
+                                    <option value="Lido">Lido</option>
+                                    <option value="Relendo">Relendo</option>
+                                </select>
+                            </div> -->
+
+                            <!-- REMOVIDO: NOVO CAMPO: Ano de Leitura (condicional) -->
+                            <!-- <div id="targetYearContainer" class="hidden">
+                                <label class="block text-gray-700 mb-2" for="targetYear">Ano de Leitura (Meta)</label>
+                                <input type="number" id="targetYear" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600" placeholder="Ex: 2024" min="1900" max="2100">
+                            </div> -->
+                            
+                            <!-- AVALIAÇÃO POR ESTRELAS REMOVIDA DAQUI -->
+                            <!-- <div>
+                                <label class="block text-gray-700 mb-2">Sua Avaliação</label>
+                                <div class="star-rating" role="radiogroup" aria-label="Sua avaliação do livro">
+                                    <input id="star5" type="radio" name="rating" value="5" aria-label="5 estrelas" />
+                                    <label for="star5"><i class="fas fa-star"></i></label>
+                                    <input id="star4" type="radio" name="rating" value="4" aria-label="4 estrelas" />
+                                    <label for="star4"><i class="fas fa-star"></i></label>
+                                    <input id="star3" type="radio" name="rating" value="3" checked aria-label="3 estrelas" />
+                                    <label for="star3"><i class="fas fa-star"></i></label>
+                                    <input id="star2" type="radio" name="rating" value="2" aria-label="2 estrelas" />
+                                    <label for="star2"><i class="fas fa-star"></i></label>
+                                    <input id="star1" type="radio" name="rating" value="1" aria-label="1 estrela" />
+                                    <label for="star1"><i class="fas fa-star"></i></label>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-4 pt-4">
+                        <button type="button" id="cancelBtn" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition" aria-label="Cancelar adição de livro">Cancelar</button>
+                        <button type="submit" class="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition" aria-label="Salvar livro">Salvar Livro</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Controles de Filtro e Navegação por Abas -->
+            <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
+                <!-- Navegação por Abas -->
+                <div class="flex space-x-2 overflow-x-auto pb-2">
+                    <button id="tabAllBooks" class="tab-button active" data-tab="all">
+                        <i class="fas fa-book-open mr-2"></i>Todos os Livros
+                    </button>
+                    <button id="tabWantToRead" class="tab-button" data-tab="Quero Ler">
+                        <i class="fas fa-bookmark mr-2"></i>Meta de Leitura
+                    </button>
+                    <button id="tabReading" class="tab-button" data-tab="Lendo">
+                        <i class="fas fa-hourglass-half mr-2"></i>Lendo
+                    </button>
+                    <button id="tabRead" class="tab-button" data-tab="Lido">
+                        <i class="fas fa-check-circle mr-2"></i>Livros Lidos
+                    </button>
+                    <button id="tabRereading" class="tab-button" data-tab="Relendo">
+                        <i class="fas fa-redo-alt mr-2"></i>Relendo
+                    </button>
+                </div>
+
+                <div class="flex items-center space-x-4 ml-auto">
+                    <span class="text-gray-700">Ordenar por:</span>
+                    <select id="sortFilter" class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-600" aria-label="Opcões de ordenação de livros">
+                        <option value="dateAdded">Mais recente</option>
+                        <option value="dateAdded-desc">Mais antigo</option>
+                        <option value="title">Título (A-Z)</option>
+                        <option value="title-desc">Título (Z-A)</option>
+                        <!-- <option value="rating">Avaliação (Melhor primeiro)</option> -->
+                        <!-- <option value="rating-desc">Avaliação (Pior primeiro)</option> -->
+                        <option value="favorite">Favoritos</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Contagem de Livros (mantida aqui para detalhes, mas um resumo no header) -->
+            <div id="bookCount" class="text-gray-600 mb-4 text-sm"></div>
+
+            <!-- Biblioteca de Livros -->
+            <div class="library-container">
+                <div id="emptyState" class="text-center py-12">
+                    <div class="max-w-md mx-auto">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8fabbb5f-cbf2-4a88-a38b-7dbc507e2a14.png" alt="Ilustração de prateleira vazia com um balão de pensamento mostrando livros" class="mx-auto mb-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Sua biblioteca está vazia</h3>
+                        <p class="text-gray-600 mb-6">Comece adicionando seus primeiros livros para criar sua coleção pessoal.</p>
+                        <button id="emptyAddBookBtn" class="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition" aria-label="Adicionar o primeiro livro">
+                            <i class="fas fa-plus mr-2"></i>Adicionar Primeiro Livro
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Seção para "Meta de Leitura" organizada por ano -->
+                <div id="wantToReadSection" class="hidden">
+                    <!-- Conteúdo será gerado via JS, organizado por ano -->
+                </div>
+
+                <!-- Seção principal para a grade de livros -->
+                <div id="booksGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                    <!-- Os livros serão adicionados aqui via JavaScript -->
+                </div>
+                
+                <!-- Controles de Paginação -->
+                <div id="paginationControls" class="hidden mt-8 flex justify-center items-center space-x-4">
+                    <button id="prevPage" class="px-4 py-2 bg-gray-200 rounded-md disabled:opacity-50 hover:bg-gray-300 transition" disabled aria-label="Página anterior">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <span id="pageInfo" class="font-medium" aria-live="polite">Página 1</span>
+                    <button id="nextPage" class="px-4 py-2 bg-gray-200 rounded-md disabled:opacity-50 hover:bg-gray-300 transition" aria-label="Próxima página">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <div id="noResultsState" class="hidden text-center py-12">
+                    <div class="max-w-md mx-auto">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/a0b1c2d3-e4f5-6789-abcd-ef1234567890.png" alt="Ilustração de lupa sem resultados" class="mx-auto mb-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Nenhum livro encontrado</h3>
+                        <p id="noResultsMessage" class="text-gray-600 mb-6">Nenhum livro corresponde aos seus critérios de pesquisa ou filtro.</p>
+                        <button id="clearFiltersBtn" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition" aria-label="Limpar pesquisa e filtros">
+                            <i class="fas fa-redo mr-2"></i>Limpar Pesquisa e Filtros
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Modal de Confirmação de Exclusão -->
+        <div id="deleteConfirmModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 hidden modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDescription">
+            <div class="bg-white rounded-lg p-6 shadow-xl w-full max-w-sm modal-content">
+                <h3 id="modalTitle" class="text-xl font-bold text-gray-800 mb-4">Confirmar Exclusão</h3>
+                <p id="modalDescription" class="text-gray-700 mb-6">Tem certeza que deseja remover "<span id="bookTitleToDelete" class="font-semibold"></span>" da sua biblioteca?</p>
+                <div class="flex justify-end space-x-4">
+                    <button id="cancelDeleteBtn" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition" aria-label="Cancelar exclusão">Cancelar</button>
+                    <button id="confirmDeleteBtn" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition" aria-label="Confirmar exclusão">Remover</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Detalhes do Livro -->
+        <div id="bookDetailsModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 hidden modal-overlay" role="dialog" aria-modal="true" aria-labelledby="detailsModalTitle">
+            <div class="bg-white rounded-lg p-6 shadow-xl w-full max-w-2xl mx-4 modal-content">
+                <button id="closeDetailsModalBtn" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl" aria-label="Fechar detalhes do livro">
+                    <i class="fas fa-times-circle"></i>
+                </button>
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="md:w-1/3 flex-shrink-0">
+                        <img id="detailsCover" src="" alt="Capa do livro" class="w-full h-auto object-cover rounded-lg shadow-md aspect-[2/3]" src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5567ae55-81ea-4b54-bd39-e98f853fbf08.png">
+                    </div>
+                    <div class="md:w-2/3">
+                        <h3 id="detailsTitle" class="text-2xl font-bold text-gray-800 mb-2"></h3>
+                        <p id="detailsAuthor" class="text-xl text-gray-600 mb-4"></p>
+                        <!-- AVALIAÇÃO POR ESTRELAS NO MODAL DE DETALHES (CONDICIONAL) -->
+                        <div id="detailsRatingSection" class="flex items-center mb-4 hidden">
+                            <div id="detailsRatingStars" class="flex mr-2"></div>
+                            <span id="detailsRatingValue" class="text-lg font-semibold text-gray-700"></span>
+                        </div>
+                        <p id="detailsStatus" class="text-gray-600 text-base mb-2"></p>
+                        <p id="detailsTargetYear" class="text-gray-500 text-sm mb-2 hidden"></p>
+                        <p id="detailsProgress" class="text-gray-500 text-sm mb-2 hidden"></p> <!-- NOVO: Progresso no modal -->
+                        <p id="detailsDateAdded" class="text-gray-500 text-sm mb-4"></p>
+                        <p id="detailsSynopsis" class="text-gray-700 text-base mb-4"></p>
+                        <div class="mt-6 flex gap-3">
+                            <!-- Botão para mudar status (ex: para "Lendo" ou "Lido") -->
+                            <button id="changeStatusBtn" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-md" aria-label="Mudar status do livro">
+                                <i class="fas fa-exchange-alt mr-2"></i> Mudar Status
+                            </button>
+                            <button id="detailsDeleteBtn" class="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 shadow-md" aria-label="Remover este livro da biblioteca">
+                                <i class="fas fa-trash-alt mr-2"></i> Remover Livro
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para Mudar Status (NOVO) -->
+        <div id="changeStatusModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 hidden modal-overlay" role="dialog" aria-modal="true" aria-labelledby="changeStatusModalTitle">
+            <div class="bg-white rounded-lg p-6 shadow-xl w-full max-w-sm modal-content">
+                <h3 id="changeStatusModalTitle" class="text-xl font-bold text-gray-800 mb-4">Mudar Status do Livro</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="newStatusSelect">Novo Status</label>
+                        <select id="newStatusSelect" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600">
+                            <option value="Quero Ler">Quero Ler</option>
+                            <option value="Lendo">Lendo</option>
+                            <option value="Lido">Lido</option>
+                            <option value="Relendo">Relendo</option>
+                        </select>
+                    </div>
+                    <!-- Campo de avaliação por estrelas no modal de mudança de status (condicional) -->
+                    <div id="changeStatusRatingContainer" class="hidden">
+                        <label class="block text-gray-700 mb-2">Sua Avaliação</label>
+                        <div class="star-rating" role="radiogroup" aria-label="Sua avaliação do livro">
+                            <input id="changeStar5" type="radio" name="changeRating" value="5" aria-label="5 estrelas" />
+                            <label for="changeStar5"><i class="fas fa-star"></i></label>
+                            <input id="changeStar4" type="radio" name="changeRating" value="4" aria-label="4 estrelas" />
+                            <label for="changeStar4"><i class="fas fa-star"></i></label>
+                            <input id="changeStar3" type="radio" name="changeRating" value="3" checked aria-label="3 estrelas" />
+                            <label for="changeStar3"><i class="fas fa-star"></i></label>
+                            <input id="changeStar2" type="radio" name="changeRating" value="2" aria-label="2 estrelas" />
+                            <label for="changeStar2"><i class="fas fa-star"></i></label>
+                            <input id="changeStar1" type="radio" name="changeRating" value="1" aria-label="1 estrela" />
+                            <label for="changeStar1"><i class="fas fa-star"></i></label>
+                        </div>
+                    </div>
+                    <!-- NOVO: Campo de Ano de Leitura (Meta) para "Quero Ler" -->
+                    <div id="changeStatusTargetYearContainer" class="hidden">
+                        <label class="block text-gray-700 mb-2" for="changeStatusTargetYear">Ano de Leitura (Meta)</label>
+                        <input type="number" id="changeStatusTargetYear" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600" placeholder="Ex: 2024" min="1900" max="2100">
+                    </div>
+                    <!-- NOVO: Campo de Progresso para "Lendo" -->
+                    <div id="changeStatusProgressContainer" class="hidden">
+                        <label class="block text-gray-700 mb-2" for="changeStatusProgress">Progresso (%)</label>
+                        <input type="number" id="changeStatusProgress" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600" min="0" max="100" placeholder="0-100">
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-4 pt-4">
+                    <button id="cancelChangeStatusBtn" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition" aria-label="Cancelar mudança de status">Cancelar</button>
+                    <button id="confirmChangeStatusBtn" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition" aria-label="Confirmar mudança de status">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+        // NOVO: Importar Firestore
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBvRjTq54g2pd2G5TizIZ7-7K1IxCPgVKE",
+            authDomain: "biblioteca-65e05.firebaseapp.com",
+            projectId: "biblioteca-65e05",
+            storageBucket: "biblioteca-65e05.firebasestorage.app",
+            messagingSenderId: "964553508507",
+            appId: "1:964553508507:web:0f46f7681a5a470f1ea83e"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+        const db = getFirestore(app); // NOVO: Inicializa o Firestore
+
+        // Elementos do DOM para login
+        const loginScreen = document.getElementById('loginScreen');
+        const mainContent = document.getElementById('mainContent');
+        const googleSignInBtn = document.getElementById('googleSignInBtn');
+        const signOutBtn = document.getElementById('signOutBtn');
+        const userNameSpan = document.getElementById('userName');
+        const loginError = document.getElementById('loginError');
+
+        // Ouvinte de evento para o botão de login do Google
+        googleSignInBtn.addEventListener('click', async () => {
+            try {
+                await signInWithPopup(auth, provider);
+                // O onAuthStateChanged lidará com a exibição do conteúdo principal
+            } catch (error) {
+                console.error("Erro ao fazer login com Google:", error);
+                let errorMessage = "Erro ao fazer login. Tente novamente.";
+                if (error.code === 'auth/popup-closed-by-user') {
+                    errorMessage = "Login cancelado. A janela pop-up foi fechada.";
+                } else if (error.code === 'auth/cancelled-popup-request') {
+                    errorMessage = "Requisição de pop-up já em andamento ou bloqueada.";
+                } else if (error.code === 'auth/network-request-failed') {
+                    errorMessage = "Erro de conexão. Verifique sua internet.";
+                }
+                loginError.textContent = errorMessage;
+                loginError.classList.remove('hidden');
+                showNotification(errorMessage, 'error');
+            }
+        });
+
+        // Ouvinte de evento para o botão de logout
+        signOutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                // O onAuthStateChanged lidará com a exibição da tela de login
+                showNotification('Você saiu da sua conta.', 'info');
+            } catch (error) {
+                console.error("Erro ao fazer logout:", error);
+                showNotification('Erro ao sair. Tente novamente.', 'error');
+            }
+        });
+
+        // Observador de estado de autenticação
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Usuário logado
+                loginScreen.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+                userNameSpan.textContent = `Olá, ${user.displayName || user.email}!`;
+                userNameSpan.classList.remove('hidden');
+                loginError.classList.add('hidden'); // Esconde qualquer erro de login anterior
+                loadBooks(); // Carrega os livros quando o usuário está logado
+            } else {
+                // Usuário deslogado
+                loginScreen.classList.remove('hidden');
+                mainContent.classList.add('hidden');
+                userNameSpan.textContent = '';
+                userNameSpan.classList.add('hidden');
+                // Limpa a array de livros em memória e renderiza a tela vazia
+                books = []; 
+                renderBooks([]); 
+                emptyState.classList.remove('hidden'); 
+                booksGrid.classList.add('hidden');
+                noResultsState.classList.add('hidden');
+                bookCount.textContent = 'Nenhum livro na biblioteca.';
+                bookStatsSpan.textContent = 'Total: 0'; // Resetar estatísticas no header
+            }
+        });
+
+        // Armazenamento dos livros (agora preenchido pelo Firestore)
+        let books = []; 
+        // Variáveis de paginação
+        const booksPerPage = 10;
+        let currentPage = 1;
+        let filteredBooks = [];
+        let bookToDeleteId = null; // Variável para armazenar o ID do livro a ser excluído
+        let bookToChangeStatusId = null; // NOVO: ID do livro para mudança de status
+        let currentTab = 'all'; // NOVO: Controla a aba ativa
+
+        // Elementos do DOM
+        const addBookBtn = document.getElementById('addBookBtn');
+        const emptyAddBookBtn = document.getElementById('emptyAddBookBtn');
+        const formContainer = document.getElementById('formContainer');
+        const formTitle = document.getElementById('formTitle');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const bookForm = document.getElementById('bookForm');
+        const emptyState = document.getElementById('emptyState');
+        const booksGrid = document.getElementById('booksGrid');
+        const searchInputHeader = document.getElementById('searchInputHeader');
+        const searchInputMobile = document.getElementById('searchInputMobile');
+        const sortFilter = document.getElementById('sortFilter');
+        const coverInput = document.getElementById('cover');
+        const coverUploadInput = document.getElementById('coverUpload');
+        const coverDropArea = document.getElementById('coverDropArea');
+        const coverPreview = document.getElementById('coverPreview');
+        const coverError = document.getElementById('coverError');
+        const titleInput = document.getElementById('title');
+        const titleError = document.getElementById('titleError');
+        const authorInput = document.getElementById('author');
+        const authorError = document.getElementById('authorError');
+        const synopsisInput = document.getElementById('synopsis'); 
+        // REMOVIDO: NOVOS ELEMENTOS DO FORMULÁRIO
+        // const statusSelect = document.getElementById('status'); // Removido
+        // const targetYearContainer = document.getElementById('targetYearContainer'); // Removido
+        // const targetYearInput = document.getElementById('targetYear'); // Removido
+
+        const noResultsState = document.getElementById('noResultsState');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+        const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+        const bookCount = document.getElementById('bookCount');
+        const bookStatsSpan = document.getElementById('bookStats');
+
+        // Modal de Confirmação de Exclusão
+        const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+        const bookTitleToDeleteSpan = document.getElementById('bookTitleToDelete');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+        // Modal de Detalhes do Livro
+        const bookDetailsModal = document.getElementById('bookDetailsModal');
+        const closeDetailsModalBtn = document.getElementById('closeDetailsModalBtn');
+        const detailsCover = document.getElementById('detailsCover');
+        const detailsTitle = document.getElementById('detailsTitle');
+        const detailsAuthor = document.getElementById('detailsAuthor');
+        const detailsRatingSection = document.getElementById('detailsRatingSection'); // NOVO: Seção de avaliação
+        const detailsRatingStars = document.getElementById('detailsRatingStars');
+        const detailsRatingValue = document.getElementById('detailsRatingValue');
+        const detailsStatus = document.getElementById('detailsStatus'); // NOVO: Status no modal
+        const detailsTargetYear = document.getElementById('detailsTargetYear'); // NOVO: Ano no modal
+        const detailsProgress = document.getElementById('detailsProgress'); // NOVO: Progresso no modal
+        const detailsDateAdded = document.getElementById('detailsDateAdded');
+        const detailsSynopsis = document.getElementById('detailsSynopsis'); 
+        const changeStatusBtn = document.getElementById('changeStatusBtn'); // NOVO: Botão de mudar status
+        const detailsDeleteBtn = document.getElementById('detailsDeleteBtn');
+
+        // Modal para Mudar Status (NOVO)
+        const changeStatusModal = document.getElementById('changeStatusModal');
+        const newStatusSelect = document.getElementById('newStatusSelect');
+        const changeStatusRatingContainer = document.getElementById('changeStatusRatingContainer');
+        const changeStatusTargetYearContainer = document.getElementById('changeStatusTargetYearContainer'); // NOVO
+        const changeStatusTargetYearInput = document.getElementById('changeStatusTargetYear'); // NOVO
+        const changeStatusProgressContainer = document.getElementById('changeStatusProgressContainer'); // NOVO
+        const changeStatusProgressInput = document.getElementById('changeStatusProgress'); // NOVO
+        const cancelChangeStatusBtn = document.getElementById('cancelChangeStatusBtn');
+        const confirmChangeStatusBtn = document.getElementById('confirmChangeStatusBtn');
+
+        // Botão de tema
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+
+        // Elementos do menu mobile
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const addBookBtnMobile = document.getElementById('addBookBtnMobile');
+        const signOutBtnMobile = document.getElementById('signOutBtnMobile');
+
+        // Elementos das abas de navegação
+        const tabAllBooks = document.getElementById('tabAllBooks');
+        const tabWantToRead = document.getElementById('tabWantToRead');
+        const tabReading = document.getElementById('tabReading');
+        const tabRead = document.getElementById('tabRead');
+        const tabRereading = document.getElementById('tabRereading');
+        const wantToReadSection = document.getElementById('wantToReadSection'); // Seção para "Meta de Leitura"
+
+        const DEFAULT_COVER_URL = "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/65c67a2c-4882-47de-a4ba-8f1cb4a4ad48.png";
+        const FALLBACK_COVER_URL = "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/96e23b18-a244-46c7-a897-808615124e49.png"; // Fallback para cards
+
+        // Ouvintes de Eventos Globais
+        addBookBtn.addEventListener('click', () => showForm());
+        emptyAddBookBtn.addEventListener('click', () => showForm());
+        cancelBtn.addEventListener('click', hideForm);
+        bookForm.addEventListener('submit', handleSubmit);
+        
+        // Ouvintes para as novas barras de pesquisa
+        searchInputHeader.addEventListener('input', filterBooks);
+        searchInputMobile.addEventListener('input', filterBooks);
+
+        sortFilter.addEventListener('change', filterBooks);
+        clearFiltersBtn.addEventListener('click', () => {
+            searchInputHeader.value = '';
+            searchInputMobile.value = '';
+            sortFilter.value = 'dateAdded'; // Volta para ordenação padrão
+            filterBooks();
+            showNotification('Filtros e pesquisa limpos.', 'info');
+        });
+
+        // Ouvintes de Eventos do Formulário de Capa
+        coverInput.addEventListener('input', updateCoverPreview);
+        coverPreview.addEventListener('error', () => {
+            coverPreview.src = DEFAULT_COVER_URL;
+            coverPreview.alt = "Pré-visualização da capa padrão do livro";
+            coverError.classList.remove('hidden');
+        });
+        coverPreview.addEventListener('load', () => {
+            coverError.classList.add('hidden');
+        });
+
+        // Ouvintes de Eventos de Upload/Drag & Drop
+        coverDropArea.addEventListener('click', () => coverUploadInput.click());
+        coverUploadInput.addEventListener('change', handleCoverUpload);
+        coverDropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            coverDropArea.classList.add('border-emerald-600', 'text-emerald-700');
+        });
+        coverDropArea.addEventListener('dragleave', () => {
+            coverDropArea.classList.remove('border-emerald-600', 'text-emerald-700');
+        });
+        coverDropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            coverDropArea.classList.remove('border-emerald-600', 'text-emerald-700');
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                handleCoverUpload({ target: { files: e.dataTransfer.files } });
+            }
+        });
+
+        // Validação em tempo real
+        titleInput.addEventListener('blur', validateTitle);
+        titleInput.addEventListener('input', () => {
+            if (titleInput.value.trim()) {
+                titleInput.classList.remove('input-error');
+                titleError.classList.add('hidden');
+            }
+        });
+        authorInput.addEventListener('blur', validateAuthor);
+        authorInput.addEventListener('input', () => {
+            if (authorInput.value.trim()) {
+                authorInput.classList.remove('input-error');
+                authorError.classList.add('hidden');
+            }
+        });
+
+        // REMOVIDO: Ouvinte para o campo de status no formulário
+        // statusSelect.addEventListener('change', () => {
+        //     if (statusSelect.value === 'Quero Ler') {
+        //         targetYearContainer.classList.remove('hidden');
+        //         targetYearInput.setAttribute('required', 'true');
+        //         targetYearInput.value = new Date().getFullYear(); // Preenche com o ano atual
+        //     } else {
+        //         targetYearContainer.classList.add('hidden');
+        //         targetYearInput.removeAttribute('required');
+        //         targetYearInput.value = '';
+        //     }
+        // });
+
+        // Ouvintes de Eventos do Modal de Confirmação
+        cancelDeleteBtn.addEventListener('click', hideDeleteConfirmModal);
+        confirmDeleteBtn.addEventListener('click', () => {
+            if (bookToDeleteId) {
+                deleteBookConfirmed(bookToDeleteId);
+                bookToDeleteId = null; // Resetar
+            }
+        });
+
+        // Ouvintes de Eventos do Modal de Detalhes
+        closeDetailsModalBtn.addEventListener('click', hideBookDetailsModal);
+        detailsDeleteBtn.addEventListener('click', async () => {
+            const book = books.find(b => b.id === bookToDeleteId);
+            if (confirm(`Tem certeza que deseja remover "${book.title}" da sua biblioteca?`)) {
+                await deleteBookConfirmed(bookToDeleteId);
+                hideBookDetailsModal();
+            }
+        });
+
+        // NOVO: Ouvintes para o Modal de Mudar Status
+        changeStatusBtn.addEventListener('click', () => showChangeStatusModal(bookToChangeStatusId));
+        cancelChangeStatusBtn.addEventListener('click', hideChangeStatusModal);
+        confirmChangeStatusBtn.addEventListener('click', confirmChangeStatus);
+        newStatusSelect.addEventListener('change', () => {
+            const selectedStatus = newStatusSelect.value;
+            // Esconde todos os campos condicionais primeiro
+            changeStatusRatingContainer.classList.add('hidden');
+            changeStatusTargetYearContainer.classList.add('hidden');
+            changeStatusProgressContainer.classList.add('hidden');
+
+            // Mostra os campos relevantes com base no status selecionado
+            if (selectedStatus === 'Lido') {
+                changeStatusRatingContainer.classList.remove('hidden');
+            } else if (selectedStatus === 'Quero Ler') {
+                changeStatusTargetYearContainer.classList.remove('hidden');
+                changeStatusTargetYearInput.value = new Date().getFullYear(); // Preenche com o ano atual
+            } else if (selectedStatus === 'Lendo') {
+                changeStatusProgressContainer.classList.remove('hidden');
+            }
+        });
+
+        // Lógica do tema claro/escuro
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            const isDarkMode = document.body.classList.contains('dark');
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            updateThemeIcon(isDarkMode);
+        });
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark');
+            }
+            updateThemeIcon(savedTheme === 'dark');
+        }
+
+        function updateThemeIcon(isDarkMode) {
+            if (isDarkMode) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        }
+
+        // Carregar tema ao iniciar
+        loadTheme();
+
+        // Lógica do menu mobile
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('open');
+        });
+
+        // Ouvintes para os botões do menu mobile
+        addBookBtnMobile.addEventListener('click', () => {
+            showForm();
+            mobileMenu.classList.add('hidden'); // Fecha o menu após a ação
+            mobileMenu.classList.remove('open');
+        });
+        signOutBtnMobile.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                showNotification('Você saiu da sua conta.', 'info');
+                mobileMenu.classList.add('hidden'); // Fecha o menu após a ação
+                mobileMenu.classList.remove('open');
+            } catch (error) {
+                console.error("Erro ao fazer logout:", error);
+                showNotification('Erro ao sair. Tente novamente.', 'error');
+            }
+        });
+        
+        // Função para resetar filtros e carregar livros (para o clique no logo)
+        function resetAndLoadBooks() {
+            searchInputHeader.value = '';
+            searchInputMobile.value = '';
+            sortFilter.value = 'dateAdded';
+            currentTab = 'all'; // Volta para a aba "Todos os Livros"
+            updateTabButtons();
+            loadBooks();
+        }
+        window.resetAndLoadBooks = resetAndLoadBooks; // Torna a função global para o onclick no HTML
+
+        // NOVO: Ouvintes para as abas de navegação
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                currentTab = e.target.dataset.tab;
+                updateTabButtons();
+                filterBooks(); // Re-filtra os livros com base na nova aba
+            });
+        });
+
+        function updateTabButtons() {
+            document.querySelectorAll('.tab-button').forEach(button => {
+                if (button.dataset.tab === currentTab) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+        }
+        
+        // Funções
+        function showForm(bookId = null) {
+            formContainer.classList.remove('hidden');
+            formContainer.scrollIntoView({ behavior: 'smooth' });
+            coverPreview.src = DEFAULT_COVER_URL;
+            coverPreview.alt = "Pré-visualização da capa";
+            coverError.classList.add('hidden');
+            titleInput.classList.remove('input-error');
+            titleError.classList.add('hidden');
+            authorInput.classList.remove('input-error');
+            authorError.classList.add('hidden');
+            document.getElementById('bookId').value = ''; // Limpa o ID para nova adição
+
+            if (bookId) { // Este bloco agora só será acessado se a função de edição for reintroduzida
+                const book = books.find(b => b.id === bookId);
+                if (book) {
+                    formTitle.textContent = 'Editar Livro';
+                    document.getElementById('bookId').value = book.id;
+                    titleInput.value = book.title;
+                    authorInput.value = book.author;
+                    synopsisInput.value = book.synopsis || ''; 
+                    coverInput.value = book.cover === DEFAULT_COVER_URL ? '' : book.cover;
+                    coverPreview.src = book.cover;
+                    coverPreview.alt = `Capa do livro ${book.title}`;
+                    // REMOVIDO: statusSelect.value = book.status || 'Quero Ler'; // Define o status
+                    // REMOVIDO: if (book.status === 'Quero Ler' && book.targetYear) {
+                    // REMOVIDO:     targetYearContainer.classList.remove('hidden');
+                    // REMOVIDO:     targetYearInput.value = book.targetYear;
+                    // REMOVIDO: } else {
+                    // REMOVIDO:     targetYearContainer.classList.add('hidden');
+                    // REMOVIDO:     targetYearInput.value = '';
+                    // REMOVIDO: }
+                    // AVALIAÇÃO POR ESTRELAS REMOVIDA DO FORMULÁRIO DE EDIÇÃO TAMBÉM
+                }
+            } else {
+                formTitle.textContent = 'Adicionar Novo Livro';
+                bookForm.reset(); 
+                // REMOVIDO: statusSelect.value = 'Quero Ler'; // Padrão para "Quero Ler"
+                // REMOVIDO: targetYearContainer.classList.remove('hidden'); // Garante que o campo de ano apareça para "Quero Ler"
+                // REMOVIDO: targetYearInput.value = new Date().getFullYear(); // Preenche com o ano atual
+                synopsisInput.value = ''; 
+            }
+            document.getElementById('title').focus();
+        }
+        
+        function hideForm() {
+            formContainer.classList.add('hidden');
+            bookForm.reset();
+            coverPreview.src = DEFAULT_COVER_URL; 
+            coverPreview.alt = "Pré-visualização da capa";
+            titleInput.classList.remove('input-error');
+            titleError.classList.add('hidden');
+            authorInput.classList.remove('input-error');
+            authorError.classList.add('hidden');
+            coverError.classList.add('hidden');
+            document.getElementById('bookId').value = ''; 
+            synopsisInput.value = ''; 
+            // REMOVIDO: statusSelect.value = 'Quero Ler'; // Resetar status para padrão
+            // REMOVIDO: targetYearContainer.classList.remove('hidden'); // Garante que o campo de ano volte a aparecer
+            // REMOVIDO: targetYearInput.value = new Date().getFullYear(); // Preenche com o ano atual
+        }
+        
+        function updateCoverPreview() {
+            const url = coverInput.value.trim();
+            if (url) {
+                coverPreview.src = url;
+                coverPreview.alt = "Pré-visualização da capa do livro carregada pelo usuário";
+            } else {
+                coverPreview.src = DEFAULT_COVER_URL;
+                coverPreview.alt = "Pré-visualização da capa padrão do livro";
+                coverError.classList.add('hidden'); 
+            }
+        }
+
+        /**
+         * Redimensiona uma imagem para as dimensões especificadas, mantendo a proporção.
+         * Se a imagem for menor que as dimensões alvo, ela não será ampliada.
+         * @param {HTMLImageElement} image - O objeto Image a ser redimensionado.
+         * @param {number} maxWidth - A largura máxima desejada.
+         * @param {number} maxHeight - A altura máxima desejada.
+         * @returns {Promise<string>} Uma Promise que resolve com a URL de dados (base64) da imagem redimensionada.
+         */
+        function resizeImage(image, maxWidth, maxHeight) {
+            return new Promise((resolve) => {
+                const canvas = document.createElement('canvas');
+                let width = image.width;
+                let height = image.height;
+
+                // Calcula as novas dimensões mantendo a proporção
+                // Se a imagem for maior que as dimensões alvo, redimensiona
+                if (width > maxWidth || height > maxHeight) {
+                    const aspectRatio = width / height;
+                    if (width > maxWidth) {
+                        width = maxWidth;
+                        height = width / aspectRatio;
+                    }
+                    if (height > maxHeight) {
+                        height = maxHeight;
+                        width = height * aspectRatio;
+                    }
+                }
+                // Se a imagem original for menor que as dimensões alvo, não a amplie.
+                // Apenas garante que as dimensões do canvas não sejam maiores que as da imagem original.
+                width = Math.min(width, image.width);
+                height = Math.min(height, image.height);
+
+
+                canvas.width = width;
+                canvas.height = height;
+
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(image, 0, 0, width, height);
+
+                // Converte o canvas para uma URL de dados (base64)
+                // Usar 'image/jpeg' com qualidade para otimização, ou 'image/png' para transparência
+                // Qualidade 0.8 (80%) é um bom equilíbrio para capas de livros.
+                resolve(canvas.toDataURL('image/jpeg', 0.8)); 
+            });
+        }
+
+        async function handleCoverUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                if (!file.type.startsWith('image/')) {
+                    showNotification('Por favor, selecione um arquivo de imagem válido (ex: JPG, PNG, GIF).', 'error');
+                    coverError.classList.remove('hidden');
+                    coverPreview.src = DEFAULT_COVER_URL;
+                    coverPreview.alt = "Pré-visualização da capa padrão do livro";
+                    coverInput.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = async () => {
+                        try {
+                            const resizedDataUrl = await resizeImage(img, 300, 450);
+                            coverInput.value = resizedDataUrl;
+                            coverPreview.src = resizedDataUrl;
+                            coverPreview.alt = `Pré-visualização da capa carregada: ${file.name}`;
+                            coverError.classList.add('hidden');
+                        } catch (error) {
+                            console.error("Erro ao redimensionar imagem:", error);
+                            coverPreview.src = DEFAULT_COVER_URL;
+                            coverPreview.alt = "Erro ao processar imagem. Capa padrão usada.";
+                            coverError.classList.remove('hidden');
+                            showNotification('Erro ao processar a imagem. Capa padrão será usada.', 'error');
+                            coverInput.value = '';
+                        }
+                    };
+                    img.onerror = () => {
+                        coverPreview.src = DEFAULT_COVER_URL;
+                        coverPreview.alt = "Erro ao carregar imagem. Capa padrão usada.";
+                        coverError.classList.remove('hidden');
+                        showNotification('Erro ao carregar a imagem do arquivo.', 'error');
+                        coverInput.value = '';
+                    };
+                    img.src = e.target.result;
+                };
+                reader.onerror = () => {
+                    coverPreview.src = DEFAULT_COVER_URL;
+                    coverPreview.alt = "Erro ao carregar imagem. Capa padrão usada.";
+                    coverError.classList.remove('hidden');
+                    showNotification('Erro ao ler o arquivo de imagem.', 'error');
+                    coverInput.value = '';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        function validateTitle() {
+            if (!titleInput.value.trim()) {
+                titleInput.classList.add('input-error');
+                titleError.classList.remove('hidden');
+                return false;
+            }
+            titleInput.classList.remove('input-error');
+            titleError.classList.add('hidden');
+            return true;
+        }
+
+        function validateAuthor() {
+            if (!authorInput.value.trim()) {
+                authorInput.classList.add('input-error');
+                authorError.classList.remove('hidden');
+                return false;
+            }
+            authorInput.classList.remove('input-error');
+            authorError.classList.add('hidden');
+            return true;
+        }
+
+        async function handleSubmit(e) { 
+            e.preventDefault();
+            
+            const title = titleInput.value.trim();
+            const author = authorInput.value.trim();
+            const cover = coverInput.value.trim();
+            const synopsis = synopsisInput.value.trim();
+            // REMOVIDO: const status = statusSelect.value; // NOVO: Pega o status
+            // REMOVIDO: let targetYear = null;
+            // REMOVIDO: if (status === 'Quero Ler') {
+            // REMOVIDO:     targetYear = parseInt(targetYearInput.value);
+            // REMOVIDO:     if (isNaN(targetYear) || targetYear < 1900 || targetYear > 2100) {
+            // REMOVIDO:         showNotification('Por favor, insira um ano de leitura válido (entre 1900 e 2100) para "Quero Ler".', 'error');
+            // REMOVIDO:         return;
+            // REMOVIDO:     }
+            // REMOVIDO: }
+
+            let isValid = validateTitle() && validateAuthor();
+
+            if (!isValid) {
+                showNotification('Por favor, preencha todos os campos obrigatórios e válidos.', 'error');
+                return;
+            }
+            
+            const user = auth.currentUser;
+            if (!user) {
+                showNotification('Você precisa estar logado para adicionar livros.', 'error');
+                return;
+            }
+
+            try {
+                const newBook = {
+                    title,
+                    author,
+                    cover: cover || DEFAULT_COVER_URL,
+                    dateAdded: new Date().toISOString(),
+                    isFavorite: false,
+                    synopsis,
+                    userId: user.uid,
+                    status: null, // Definido como null ao cadastrar
+                    targetYear: null, // Definido como null ao cadastrar
+                    rating: null, // Avaliação inicial nula
+                    progress: 0 // Progresso inicial
+                };
+                
+                const docRef = await addDoc(collection(db, `users/${user.uid}/books`), newBook); 
+                newBook.id = docRef.id; 
+                showNotification(`"${title}" foi adicionado à sua biblioteca!`, 'success');
+                
+                hideForm();
+                loadBooks(); 
+            } catch (error) {
+                console.error("Erro ao salvar livro:", error);
+                showNotification('Erro ao salvar livro. Tente novamente.', 'error');
+            }
+        }
+        
+        async function loadBooks(newBookId = null) { 
+            const user = auth.currentUser;
+            if (!user) {
+                books = []; 
+                renderBooks([]); 
+                emptyState.classList.remove('hidden');
+                booksGrid.classList.add('hidden');
+                noResultsState.classList.add('hidden');
+                bookCount.textContent = 'Nenhum livro na biblioteca.';
+                bookStatsSpan.textContent = 'Total: 0';
+                return;
+            }
+
+            try {
+                const booksCollectionRef = collection(db, `users/${user.uid}/books`);
+                const q = query(booksCollectionRef, orderBy('dateAdded', 'desc')); 
+                const querySnapshot = await getDocs(q);
+                
+                books = []; 
+                querySnapshot.forEach((doc) => {
+                    books.push({ id: doc.id, ...doc.data() });
+                });
+
+                if (books.length === 0) {
+                    emptyState.classList.remove('hidden');
+                    booksGrid.classList.add('hidden');
+                    wantToReadSection.classList.add('hidden'); // Esconde a seção de meta de leitura
+                    noResultsState.classList.add('hidden');
+                    bookCount.textContent = 'Nenhum livro na biblioteca.';
+                    bookStatsSpan.textContent = 'Total: 0';
+                    return;
+                }
+                
+                emptyState.classList.add('hidden');
+                noResultsState.classList.add('hidden');
+                
+                filterBooks(newBookId); 
+            } catch (error) {
+                console.error("Erro ao carregar livros:", error);
+                showNotification('Erro ao carregar livros. Tente novamente.', 'error');
+            }
+        }
+        
+        async function filterBooks(newBookId = null) { 
+            const searchTerm = (searchInputHeader.value || searchInputMobile.value).toLowerCase();
+            const sortBy = sortFilter.value;
+            const user = auth.currentUser;
+
+            if (!user) {
+                filteredBooks = [];
+                renderBooks([]);
+                return;
+            }
+
+            let currentBooks = [...books]; // Copia a lista completa de livros
+
+            // Filtra por aba (status)
+            if (currentTab !== 'all') {
+                currentBooks = currentBooks.filter(book => book.status === currentTab);
+            }
+
+            // Filtra por termo de pesquisa
+            currentBooks = currentBooks.filter(book => 
+                book.title.toLowerCase().includes(searchTerm) || 
+                book.author.toLowerCase().includes(searchTerm) ||
+                (book.synopsis && book.synopsis.toLowerCase().includes(searchTerm))
+            );
+
+            // Ordenação
+            if (sortBy === 'favorite') {
+                currentBooks.sort((a, b) => (b.isFavorite ? 1 : 0) - (a.isFavorite ? 1 : 0));
+            } else if (sortBy === 'title') {
+                currentBooks.sort((a, b) => a.title.localeCompare(b.title));
+            } else if (sortBy === 'title-desc') {
+                currentBooks.sort((a, b) => b.title.localeCompare(a.title));
+            } else if (sortBy === 'dateAdded') {
+                currentBooks.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+            } else if (sortBy === 'dateAdded-desc') {
+                currentBooks.sort((a, b) => new Date(a.dateAdded) - new Date(b.dateAdded));
+            }
+            // Avaliação por estrelas será tratada apenas para livros "Lido" e não no filtro geral por enquanto.
+
+            filteredBooks = currentBooks;
+            currentPage = 1;
+            renderBooks(filteredBooks, searchTerm, newBookId);
+        }
+        
+        function renderBooks(booksToRender, searchTerm = '', newBookId = null) {
+            booksGrid.innerHTML = '';
+            wantToReadSection.innerHTML = ''; // Limpa a seção de meta de leitura
+            
+            // Esconde ambas as seções por padrão
+            booksGrid.classList.add('hidden');
+            wantToReadSection.classList.add('hidden');
+
+            // Atualiza a contagem de livros no rodapé
+            bookCount.textContent = `Exibindo ${booksToRender.length} de ${books.length} livros.`;
+            if (searchTerm || currentTab !== 'all' || sortFilter.value === 'favorite') {
+                bookCount.textContent = `Exibindo ${booksToRender.length} livros (filtrados de ${books.length}).`;
+            } else {
+                bookCount.textContent = `Total de livros: ${books.length}.`;
+            }
+
+            // Atualiza as estatísticas no header
+            bookStatsSpan.textContent = `Total: ${books.length}`;
+
+            const paginationControls = document.getElementById('paginationControls');
+            if (booksToRender.length > booksPerPage) {
+                paginationControls.classList.remove('hidden');
+                updatePaginationControls(booksToRender.length);
+            } else {
+                paginationControls.classList.add('hidden');
+            }
+            
+            if (booksToRender.length === 0) {
+                booksGrid.classList.add('hidden');
+                wantToReadSection.classList.add('hidden');
+                noResultsState.classList.remove('hidden');
+                if (searchTerm || currentTab !== 'all' || sortFilter.value === 'favorite') {
+                    noResultsMessage.textContent = `Nenhum livro encontrado para "${searchTerm}" com os filtros atuais na aba "${currentTab === 'all' ? 'Todos os Livros' : currentTab}".`;
+                } else {
+                    noResultsMessage.textContent = `Nenhum livro corresponde aos seus critérios de filtro.`;
+                }
+                emptyState.classList.add('hidden');
+                return;
+            }
+            
+            noResultsState.classList.add('hidden');
+            emptyState.classList.add('hidden');
+
+            // Lógica para exibir a seção correta
+            if (currentTab === 'Quero Ler') {
+                wantToReadSection.classList.remove('hidden');
+                renderWantToReadBooks(booksToRender, newBookId);
+            } else {
+                booksGrid.classList.remove('hidden');
+                const booksToDisplay = getPaginatedBooks(booksToRender);
+                booksToDisplay.forEach(book => {
+                    const isFavorite = book.isFavorite ? 'text-red-500' : 'text-gray-400';
+                    
+                    const bookElement = document.createElement('div');
+                    bookElement.id = `book-${book.id}`;
+                    bookElement.className = `book-card bg-white rounded-xl overflow-hidden relative hover:shadow-md transition-all flex flex-col cursor-pointer ${newBookId === book.id ? 'animate-slide-in-up' : ''}`;
+                    bookElement.setAttribute('tabindex', '0'); 
+                    bookElement.setAttribute('role', 'button'); 
+                    bookElement.setAttribute('aria-label', `Ver detalhes do livro ${book.title} por ${book.author}`);
+
+                    let additionalInfo = '';
+                    if (book.status === 'Lido' && book.rating !== null && book.rating !== undefined) {
+                        additionalInfo += `<div class="flex items-center text-sm text-gray-600 mt-1">${renderStars(book.rating)}</div>`;
+                    } else if (book.status === 'Lendo' && book.progress !== null && book.progress !== undefined) {
+                        additionalInfo += `<p class="text-sm text-gray-500 mt-1">Progresso: ${book.progress}%</p>`;
+                    }
+                    
+                    bookElement.innerHTML = `
+                        <div class="flex flex-col h-full">
+                            <div class="relative aspect-[2/3]">
+                                <div class="h-full w-full overflow-hidden flex items-center justify-center bg-gray-100">
+                                    <img src="${book.cover}" alt="Capa do livro ${book.title} por ${book.author}" class="w-full h-full object-cover" 
+                                        onerror="this.src='${FALLBACK_COVER_URL}'; this.closest('.relative').querySelector('.cover-warning-icon').classList.remove('hidden');">
+                                </div>
+                                <div class="absolute top-2 left-10 text-yellow-500 cover-warning-icon ${book.cover === DEFAULT_COVER_URL ? '' : 'hidden'}" title="Capa padrão usada (URL original inválida)">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                            </div>
+                            <div class="p-4 flex-grow">
+                                <h3 class="font-bold text-lg text-gray-800 mb-1 line-clamp-2">${book.title}</h3>
+                                <p class="text-gray-600 mb-1">${book.author}</p>
+                                <p class="text-sm text-gray-500">Status: <span class="font-semibold">${book.status || 'Não Definido'}</span></p>
+                                ${book.status === 'Quero Ler' && book.targetYear ? `<p class="text-sm text-gray-500">Meta: ${book.targetYear}</p>` : ''}
+                                ${additionalInfo}
+                            </div>
+                            <div class="absolute top-2 left-2 flex gap-1">
+                                <button onclick="event.stopPropagation(); toggleFavorite('${book.id}')" class="w-8 h-8 bg-white bg-opacity-80 rounded-full flex items-center justify-center ${isFavorite} hover:bg-red-100 transition" aria-label="${book.isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}">
+                                    <i class="${book.isFavorite ? 'fas' : 'far'} fa-heart"></i>
+                                </button>
+                                <button onclick="event.stopPropagation(); showDeleteConfirmModal('${book.id}')" class="w-8 h-8 bg-white bg-opacity-80 rounded-full flex items-center justify-center text-red-500 hover:bg-red-100 transition" aria-label="Remover livro ${book.title}">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    bookElement.addEventListener('click', () => showBookDetailsModal(book.id));
+                    booksGrid.appendChild(bookElement);
+                });
+            }
+        }
+
+        // NOVO: Função para renderizar livros na seção "Meta de Leitura"
+        function renderWantToReadBooks(booksToRender, newBookId = null) {
+            wantToReadSection.innerHTML = ''; // Limpa a seção
+            booksGrid.classList.add('hidden'); // Garante que a grade principal esteja oculta
+
+            // Agrupa os livros por ano
+            const booksByYear = booksToRender.reduce((acc, book) => {
+                if (book.status === 'Quero Ler' && book.targetYear) {
+                    const year = book.targetYear.toString();
+                    if (!acc[year]) {
+                        acc[year] = [];
+                    }
+                    acc[year].push(book);
+                }
+                return acc;
+            }, {});
+
+            const sortedYears = Object.keys(booksByYear).sort((a, b) => parseInt(b) - parseInt(a)); // Ordena os anos do mais recente para o mais antigo
+
+            if (sortedYears.length === 0) {
+                wantToReadSection.innerHTML = `
+                    <div class="text-center py-12">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Nenhum livro na sua Meta de Leitura.</h3>
+                        <p class="text-gray-600 mb-6">Adicione livros com o status "Quero Ler" para organizar suas futuras leituras.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            sortedYears.forEach(year => {
+                const yearSection = document.createElement('div');
+                yearSection.className = 'mb-8';
+                yearSection.innerHTML = `
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">${year}</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4" id="booksGrid-${year}">
+                        <!-- Livros do ano serão inseridos aqui -->
+                    </div>
+                `;
+                wantToReadSection.appendChild(yearSection);
+
+                const yearBooksGrid = document.getElementById(`booksGrid-${year}`);
+                booksByYear[year].forEach(book => {
+                    const isFavorite = book.isFavorite ? 'text-red-500' : 'text-gray-400';
+                    
+                    const bookElement = document.createElement('div');
+                    bookElement.id = `book-${book.id}`;
+                    bookElement.className = `book-card bg-white rounded-xl overflow-hidden relative hover:shadow-md transition-all flex flex-col cursor-pointer ${newBookId === book.id ? 'animate-slide-in-up' : ''}`;
+                    bookElement.setAttribute('tabindex', '0'); 
+                    bookElement.setAttribute('role', 'button'); 
+                    bookElement.setAttribute('aria-label', `Ver detalhes do livro ${book.title} por ${book.author}`);
+
+                    bookElement.innerHTML = `
+                        <div class="flex flex-col h-full">
+                            <div class="relative aspect-[2/3]">
+                                <div class="h-full w-full overflow-hidden flex items-center justify-center bg-gray-100">
+                                    <img src="${book.cover}" alt="Capa do livro ${book.title} por ${book.author}" class="w-full h-full object-cover" 
+                                        onerror="this.src='${FALLBACK_COVER_URL}'; this.closest('.relative').querySelector('.cover-warning-icon').classList.remove('hidden');">
+                                </div>
+                                <div class="absolute top-2 left-10 text-yellow-500 cover-warning-icon ${book.cover === DEFAULT_COVER_URL ? '' : 'hidden'}" title="Capa padrão usada (URL original inválida)">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                            </div>
+                            <div class="p-4 flex-grow">
+                                <h3 class="font-bold text-lg text-gray-800 mb-1 line-clamp-2">${book.title}</h3>
+                                <p class="text-gray-600 mb-1">${book.author}</p>
+                                <p class="text-sm text-gray-500">Status: <span class="font-semibold">${book.status || 'Não Definido'}</span></p>
+                                ${book.status === 'Quero Ler' && book.targetYear ? `<p class="text-sm text-gray-500">Meta: ${book.targetYear}</p>` : ''}
+                            </div>
+                            <div class="absolute top-2 left-2 flex gap-1">
+                                <button onclick="event.stopPropagation(); toggleFavorite('${book.id}')" class="w-8 h-8 bg-white bg-opacity-80 rounded-full flex items-center justify-center ${isFavorite} hover:bg-red-100 transition" aria-label="${book.isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}">
+                                    <i class="${book.isFavorite ? 'fas' : 'far'} fa-heart"></i>
+                                </button>
+                                <button onclick="event.stopPropagation(); showDeleteConfirmModal('${book.id}')" class="w-8 h-8 bg-white bg-opacity-80 rounded-full flex items-center justify-center text-red-500 hover:bg-red-100 transition" aria-label="Remover livro ${book.title}">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    bookElement.addEventListener('click', () => showBookDetailsModal(book.id));
+                    yearBooksGrid.appendChild(bookElement);
+                });
+            });
+        }
+        
+        function getPaginatedBooks(booksToRender) {
+            const startIndex = (currentPage - 1) * booksPerPage;
+            return booksToRender.slice(startIndex, startIndex + booksPerPage);
+        }
+
+        function updatePaginationControls(totalBooks) {
+            const totalPages = Math.ceil(totalBooks / booksPerPage);
+            document.getElementById('pageInfo').textContent = `Página ${currentPage} de ${totalPages}`;
+            
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+            
+            prevBtn.onclick = null;
+            nextBtn.onclick = null;
+
+            prevBtn.onclick = () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderBooks(filteredBooks);
+                    window.scrollTo({ top: 0, behavior: 'smooth' }); 
+                }
+            };
+            
+            nextBtn.onclick = () => {
+                if (currentPage * booksPerPage < filteredBooks.length) {
+                    currentPage++;
+                    renderBooks(filteredBooks);
+                    window.scrollTo({ top: 0, behavior: 'smooth' }); 
+                }
+            };
+        }
+
+        function renderStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                stars += `
+                    <span class="text-${i <= rating ? 'yellow-400' : 'gray-300'}">
+                        <i class="fas fa-star"></i>
+                    </span>
+                `;
+            }
+            return stars;
+        }
+
+        // Funções de Favoritos
+        window.toggleFavorite = async function(id) { 
+            const user = auth.currentUser;
+            if (!user) {
+                showNotification('Você precisa estar logado para marcar favoritos.', 'error');
+                return;
+            }
+
+            const bookIndex = books.findIndex(book => book.id === id);
+            if (bookIndex > -1) {
+                const currentFavoriteStatus = books[bookIndex].isFavorite;
+                const bookRef = doc(db, `users/${user.uid}/books`, id);
+
+                try {
+                    await updateDoc(bookRef, {
+                        isFavorite: !currentFavoriteStatus
+                    });
+                    books[bookIndex].isFavorite = !currentFavoriteStatus; 
+                    filterBooks(); 
+                    showNotification(
+                        !currentFavoriteStatus ? `"${books[bookIndex].title}" adicionado aos favoritos!` : `"${books[bookIndex].title}" removido dos favoritos.`,
+                        'info'
+                    );
+                } catch (error) {
+                    console.error("Erro ao alternar favorito:", error);
+                    showNotification('Erro ao atualizar favorito. Tente novamente.', 'error');
+                }
+            }
+        }
+        
+        // Funções do Modal de Confirmação de Exclusão
+        window.showDeleteConfirmModal = function(id) {
+            bookToDeleteId = id;
+            const book = books.find(b => b.id === id);
+            if (book) {
+                bookTitleToDeleteSpan.textContent = book.title;
+                deleteConfirmModal.classList.remove('hidden');
+            }
+        }
+
+        function hideDeleteConfirmModal() {
+            deleteConfirmModal.classList.add('hidden');
+            bookToDeleteId = null;
+        }
+
+        async function deleteBookConfirmed(id) { 
+            hideDeleteConfirmModal();
+            const user = auth.currentUser;
+            if (!user) {
+                showNotification('Você precisa estar logado para remover livros.', 'error');
+                return;
+            }
+
+            const bookElement = document.getElementById(`book-${id}`);
+            const deletedBookTitle = books.find(book => book.id === id)?.title;
+
+            if (bookElement) {
+                bookElement.classList.add('animate-shrink-fade');
+                bookElement.addEventListener('animationend', async () => { 
+                    try {
+                        await deleteDoc(doc(db, `users/${user.uid}/books`, id)); 
+                        books = books.filter(book => book.id !== id); 
+                        loadBooks(); 
+                        showNotification(`"${deletedBookTitle}" removido com sucesso!`, 'success');
+                    } catch (error) {
+                        console.error("Erro ao excluir livro:", error);
+                        showNotification('Erro ao remover livro. Tente novamente.', 'error');
+                    }
+                });
+            } else {
+                try {
+                    await deleteDoc(doc(db, `users/${user.uid}/books`, id)); 
+                    books = books.filter(book => book.id !== id); 
+                    loadBooks(); 
+                    showNotification(`"${deletedBookTitle}" removido com sucesso!`, 'success');
+                } catch (error) {
+                    console.error("Erro ao excluir livro:", error);
+                    showNotification('Erro ao remover livro. Tente novamente.', 'error');
+                }
+            }
+        }
+
+        // Funções do Modal de Detalhes do Livro
+        window.showBookDetailsModal = function(id) {
+            const book = books.find(b => b.id === id);
+            if (book) {
+                bookToDeleteId = book.id; // Armazena o ID para o botão de exclusão no modal de detalhes
+                bookToChangeStatusId = book.id; // NOVO: Armazena o ID para o botão de mudar status
+
+                detailsCover.src = book.cover;
+                detailsCover.alt = `Capa do livro ${book.title}`;
+                detailsTitle.textContent = book.title;
+                detailsAuthor.textContent = book.author;
+                detailsStatus.textContent = `Status: ${book.status || 'Não Definido'}`;
+
+                if (book.status === 'Quero Ler' && book.targetYear) {
+                    detailsTargetYear.textContent = `Meta de Leitura: ${book.targetYear}`;
+                    detailsTargetYear.classList.remove('hidden');
+                } else {
+                    detailsTargetYear.classList.add('hidden');
+                }
+
+                if (book.status === 'Lendo' && book.progress !== null && book.progress !== undefined) {
+                    detailsProgress.textContent = `Progresso: ${book.progress}%`;
+                    detailsProgress.classList.remove('hidden');
+                } else {
+                    detailsProgress.classList.add('hidden');
+                }
+
+                // Exibe a avaliação por estrelas apenas se o status for "Lido" e houver uma avaliação
+                if (book.status === 'Lido' && book.rating !== null && book.rating !== undefined) {
+                    detailsRatingStars.innerHTML = renderStars(book.rating);
+                    detailsRatingValue.textContent = `${book.rating}.0`;
+                    detailsRatingSection.classList.remove('hidden');
+                } else {
+                    detailsRatingSection.classList.add('hidden');
+                }
+
+                detailsDateAdded.textContent = `Adicionado em: ${new Date(book.dateAdded).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+                detailsSynopsis.textContent = book.synopsis || 'Nenhuma sinopse disponível para este livro.';
+                
+                bookDetailsModal.classList.remove('hidden');
+            }
+        }
+
+        function hideBookDetailsModal() {
+            bookDetailsModal.classList.add('hidden');
+            bookToDeleteId = null;
+            bookToChangeStatusId = null;
+        }
+
+        // NOVO: Funções para o Modal de Mudar Status
+        function showChangeStatusModal(id) {
+            const book = books.find(b => b.id === id);
+            if (book) {
+                newStatusSelect.value = book.status || 'Quero Ler';
+                // Resetar visibilidade dos campos condicionais
+                changeStatusRatingContainer.classList.add('hidden');
+                changeStatusTargetYearContainer.classList.add('hidden');
+                changeStatusProgressContainer.classList.add('hidden');
+
+                // Preencher e mostrar campos com base no status atual do livro
+                if (book.status === 'Lido') {
+                    changeStatusRatingContainer.classList.remove('hidden');
+                    document.querySelector(`input[name="changeRating"][value="${book.rating || 3}"]`).checked = true;
+                } else if (book.status === 'Quero Ler') {
+                    changeStatusTargetYearContainer.classList.remove('hidden');
+                    changeStatusTargetYearInput.value = book.targetYear || new Date().getFullYear();
+                } else if (book.status === 'Lendo') {
+                    changeStatusProgressContainer.classList.remove('hidden');
+                    changeStatusProgressInput.value = book.progress || 0;
+                }
+                
+                changeStatusModal.classList.remove('hidden');
+            }
+        }
+
+        function hideChangeStatusModal() {
+            changeStatusModal.classList.add('hidden');
+            // Resetar valores dos campos condicionais ao fechar
+            changeStatusTargetYearInput.value = '';
+            changeStatusProgressInput.value = '';
+            document.querySelector('input[name="changeRating"][value="3"]').checked = true; // Volta para 3 estrelas padrão
+        }
+
+        async function confirmChangeStatus() {
+            const user = auth.currentUser;
+            if (!user) {
+                showNotification('Você precisa estar logado para mudar o status do livro.', 'error');
+                return;
+            }
+
+            const book = books.find(b => b.id === bookToChangeStatusId);
+            if (!book) {
+                showNotification('Livro não encontrado.', 'error');
+                return;
+            }
+
+            const newStatus = newStatusSelect.value;
+            let updatedRating = null;
+            let updatedTargetYear = null;
+            let updatedProgress = null;
+
+            if (newStatus === 'Lido') {
+                updatedRating = parseInt(document.querySelector('input[name="changeRating"]:checked').value);
+            } else if (newStatus === 'Quero Ler') {
+                updatedTargetYear = parseInt(changeStatusTargetYearInput.value);
+                if (isNaN(updatedTargetYear) || updatedTargetYear < 1900 || updatedTargetYear > 2100) {
+                    showNotification('Por favor, insira um ano de leitura válido (entre 1900 e 2100) para "Quero Ler".', 'error');
+                    return;
+                }
+            } else if (newStatus === 'Lendo') {
+                updatedProgress = parseInt(changeStatusProgressInput.value);
+                if (isNaN(updatedProgress) || updatedProgress < 0 || updatedProgress > 100) {
+                    showNotification('Por favor, insira um progresso válido (entre 0 e 100) para "Lendo".', 'error');
+                    return;
+                }
+            }
+
+            try {
+                const bookRef = doc(db, `users/${user.uid}/books`, book.id);
+                await updateDoc(bookRef, {
+                    status: newStatus,
+                    rating: updatedRating,
+                    targetYear: updatedTargetYear,
+                    progress: updatedProgress
+                });
+
+                // Atualiza o livro na array local
+                const bookIndex = books.findIndex(b => b.id === book.id);
+                if (bookIndex > -1) {
+                    books[bookIndex].status = newStatus;
+                    books[bookIndex].rating = updatedRating;
+                    books[bookIndex].targetYear = updatedTargetYear;
+                    books[bookIndex].progress = updatedProgress;
+                }
+
+                showNotification(`Status de "${book.title}" atualizado para "${newStatus}"!`, 'success');
+                hideChangeStatusModal();
+                hideBookDetailsModal(); // Fecha o modal de detalhes também
+                loadBooks(); // Recarrega e filtra os livros
+            } catch (error) {
+                console.error("Erro ao mudar status:", error);
+                showNotification('Erro ao mudar status do livro. Tente novamente.', 'error');
+            }
+        }
+        
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            let bgColor, iconClass;
+
+            switch (type) {
+                case 'success':
+                    bgColor = 'bg-green-500';
+                    iconClass = 'fas fa-check-circle';
+                    break;
+                case 'error':
+                    bgColor = 'bg-red-500';
+                    iconClass = 'fas fa-times-circle';
+                    break;
+                case 'info':
+                default:
+                    bgColor = 'bg-blue-500';
+                    iconClass = 'fas fa-info-circle';
+                    break;
+            }
+
+            notification.className = `fixed bottom-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg flex items-center animate-fade-in z-50`;
+            notification.innerHTML = `
+                <i class="${iconClass} mr-2"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('animate-fade-out');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
